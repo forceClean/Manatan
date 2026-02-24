@@ -1,5 +1,3 @@
-import { CHAPTER_SORT_OPTIONS_TO_TRANSLATION_KEY } from "@/features/chapter/Chapter.constants";
-
 export type JimakuEntry = {
     id: number;
     name: string;
@@ -334,8 +332,6 @@ const searchJimakuEntries = async ({ apiKey, query, anilistId, searchType = 'ani
     });
 
     const response = await fetch(url, { headers: buildHeaders(apiKey) });
-    console.log('Jimaku search response', { url, response });
-    console.log('url:', url);
     if (!response.ok) {
         throw new Error(`Jimaku search failed (${response.status})`);
     }
@@ -350,8 +346,6 @@ const fetchJimakuEpisodeFiles = async (apiKey: string, entryId: number, episodeN
     const url = buildUrl(`/entries/${entryId}/files`, params);
     const response = await fetch(url, { headers: buildHeaders(apiKey) });
 
-    console.log('Jimaku file response', { url, response });
-    console.log('url:', url);
     if (!response.ok) {
         throw new Error(`Jimaku files failed (${response.status})`);
     }
