@@ -686,7 +686,7 @@ fn main() -> eframe::Result<()> {
     let icon = icon_data::from_png_bytes(ICON_BYTES).expect("The icon data must be valid");
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
-            .with_inner_size([320.0, 320.0])
+            .with_inner_size(egui::vec2(320.0, 320.0))
             .with_icon(icon)
             .with_title(APP_NAME)
             .with_resizable(false)

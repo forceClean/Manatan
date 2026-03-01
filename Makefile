@@ -284,6 +284,10 @@ dev: setup-depends
 dev-embedded: setup-depends bundle_jre
 	cargo run --release -p manatan --features embed-jre
 
+.PHONY: dev-embedded-headless
+dev-embedded-headless: setup-depends bundle_jre
+	cargo run --release -p manatan --features embed-jre -- --headless
+
 .PHONY: dev-embedded-local-jar
 dev-embedded-local-jar: download_natives desktop_webui local_suwayomi_jar bundle_jre local_manatan_server_staticlib
 	cargo clean -p manatan-server-public
