@@ -624,6 +624,26 @@ const AnkiButtons: React.FC<{
                 return `<div style="margin-bottom:8px;"><span style="font-size:0.7em;color:#888;background:rgba(139,92,246,0.2);padding:2px 6px;border-radius:3px;">${pa.dictionaryName}</span><div style="margin-top:4px;padding:4px 8px;background:rgba(0,0,0,0.2);border-radius:4px;">${pitchHtml}</div></div>`;
             }).join('');
         };
+        const getPitchAccentNotation = (): string => {
+            const { pitchAccents } = extractPronunciationData(entry);
+            if (!pitchAccents || pitchAccents.length === 0) return '';
+
+            const notations: string[] = [];
+            const seenNotations = new Set<string>();
+
+            pitchAccents.forEach(pa => {
+                pa.pitches.forEach(p => {
+                    const pos = typeof p.position === 'number' ? p.position : 0;
+                    const notation = `[${pos}]`;
+                    if (!seenNotations.has(notation)) {
+                        notations.push(notation);
+                        seenNotations.add(notation);
+                    }
+                });
+            });
+
+            return notations.join('\n');
+        };
         const buildGlossaryHtml = (dictionaryName?: string): string => {
             const glossaryEntries = dictionaryName
                 ? entry.glossary.filter((def) => def.dictionaryName === dictionaryName)
@@ -681,6 +701,7 @@ const AnkiButtons: React.FC<{
             else if (mapType === 'Frequency') fields[ankiField] = getFrequency();
             else if (mapType === 'Harmonic Frequency') fields[ankiField] = getHarmonicFrequency();
             else if (mapType === 'Pitch Accent') fields[ankiField] = getPitchAccent();
+            else if (mapType === 'Pitch Accent Positions') fields[ankiField] = getPitchAccentNotation();
             else if (mapType === 'Sentence') fields[ankiField] = sentence;
             else if (mapType === 'Sentence Furigana') fields[ankiField] = sentenceFurigana;
             else if (mapType === 'Word Audio') fields[ankiField] = '';

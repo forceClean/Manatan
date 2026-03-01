@@ -490,6 +490,27 @@ const generateAnkiPitchAccent = (entry: DictionaryResult): string => {
     }).filter(Boolean).join('');
 };
 
+const generateAnkiPitchAccentNotation = (entry: DictionaryResult): string => {
+    const { pitchAccents } = extractPronunciationData(entry);
+    if (!pitchAccents || pitchAccents.length === 0) return '';
+
+    const notations: string[] = [];
+    const seenNotations = new Set<string>();
+
+    pitchAccents.forEach(pa => {
+        pa.pitches.forEach(p => {
+            const pos = typeof p.position === 'number' ? p.position : 0;
+            const notation = `[${pos}]`;
+            if (!seenNotations.has(notation)) {
+                notations.push(notation);
+                seenNotations.add(notation);
+            }
+        });
+    });
+
+    return notations.join('\n');
+};
+
 const getTermTagLabel = (tag: unknown): string => {
     if (typeof tag === 'string') {
         return tag;
@@ -2761,6 +2782,7 @@ export const AnimeVideoPlayer = ({
                 else if (mapType === 'Reading') fields[ankiField] = entry.reading;
                 else if (mapType === 'Furigana') fields[ankiField] = generateAnkiFurigana(entry);
                 else if (mapType === 'Pitch Accent') fields[ankiField] = generateAnkiPitchAccent(entry);
+                else if (mapType === 'Pitch Accent Positions') fields[ankiField] = generateAnkiPitchAccentNotation(entry);
                 else if (mapType === 'Definition' || mapType === 'Glossary') {
                     fields[ankiField] = buildDefinitionHtml(entry);
                 }

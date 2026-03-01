@@ -135,6 +135,7 @@ const BASE_MAPPING_OPTIONS = [
     'Frequency',
     'Harmonic Frequency',
     'Pitch Accent',
+    'Pitch Accent Positions',
     'x',
 ];
 
